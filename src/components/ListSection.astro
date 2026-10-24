@@ -1,0 +1,29 @@
+---
+import type { ListItem } from '@data/site';
+
+interface Props {
+  id: string;
+  title: string;
+  items: ListItem[];
+}
+
+const { id, title, items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section id={id} class="container-page scroll-mt-8 pb-20 sm:pb-28" aria-labelledby={`${id}-heading`}>
+    <div class="grid gap-6 lg:grid-cols-12 lg:gap-16">
+      <h2 id={`${id}-heading`} class="eyebrow lg:col-span-5">{title}</h2>
+      <ul class="lg:col-span-7">
+        {items.map((item) => (
+          <li class="border-b-4 border-bg-grey py-5 first:pt-0">
+            <p class="subhead">
+              {item.href ? <a href={item.href} class="link-large">{item.title}</a> : item.title}
+            </p>
+            <p class="caption-regular mt-2 text-low">{item.meta}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

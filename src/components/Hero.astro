@@ -1,0 +1,12 @@
+---
+import { site } from '@data/site';
+
+const { name, role, location, tagline } = site.hero;
+---
+
+<section class="container-page py-20 sm:py-40" aria-labelledby="hero-heading">
+  <p class="eyebrow mb-4">{role} · {location}</p>
+  <h1 id="hero-heading" class="title max-w-4xl">
+    {name}. {tagline}
+  </h1>
+</section>

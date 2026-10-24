@@ -1,5 +1,5 @@
 export const navLinks = [
+  { href: '#work', label: 'Work' },
   { href: '#about', label: 'About' },
-  { href: '#featured-projects', label: 'Work' },
-  // Add { href: '#testimonials', label: 'Kind words' } once site.testimonials has entries.
+  { href: '#contact', label: '@Contact' },
 ] as const;

@@ -1,0 +1,70 @@
+---
+import { navLinks } from '@data/nav';
+import { site } from '@data/site';
+import { withBase } from '../utils/withBase';
+
+interface Props {
+  /** On case study pages the section links point back to the home page. */
+  home?: boolean;
+}
+
+const { home = true } = Astro.props;
+const prefix = home ? '' : withBase();
+---
+
+<header class="container-page">
+  <nav class="flex flex-wrap items-center justify-between gap-4 py-8" aria-label="Primary">
+    <a href={home ? '#top' : withBase()} class="subhead transition-colors hover:text-low">
+      {site.hero.name}
+    </a>
+    <div class="flex items-center gap-2 sm:gap-6">
+      <ul class="flex items-center gap-4 sm:gap-8">
+        {navLinks.map((link) => (
+          <li>
+            <a href={`${prefix}${link.href}`} class="caption-bold text-low transition-colors hover:text-high">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <button
+        type="button"
+        id="theme-toggle"
+        class="flex items-center p-2 text-low transition-colors hover:text-high"
+        aria-label="Switch to dark mode"
+      >
+        <svg class="hidden h-5 w-5 dark:block" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-5a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 17a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM3 11h1a1 1 0 1 1 0 2H3a1 1 0 1 1 0-2Zm17 0h1a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2ZM5.64 4.22l.7.71a1 1 0 0 1-1.41 1.41l-.71-.7a1 1 0 0 1 1.42-1.42Zm13.43 13.43.71.7a1 1 0 0 1-1.42 1.42l-.7-.71a1 1 0 0 1 1.41-1.41ZM18.36 4.22a1 1 0 0 1 1.42 1.42l-.71.7a1 1 0 0 1-1.41-1.41l.7-.71ZM4.93 17.65a1 1 0 0 1 1.41 1.41l-.7.71a1 1 0 0 1-1.42-1.42l.71-.7Z" />
+        </svg>
+        <svg class="h-5 w-5 dark:hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 14.5A9 9 0 0 1 9.5 3a1 1 0 0 0-1.23-1.23A11 11 0 1 0 22.23 15.73 1 1 0 0 0 21 14.5Z" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  function setupThemeToggle() {
+    const button = document.getElementById('theme-toggle');
+    if (!button) return;
+    const root = document.documentElement;
+    const sync = () => {
+      const dark = root.dataset.theme === 'dark';
+      button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    };
+    sync();
+    button.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        // Storage can be unavailable (private mode); the toggle still works for this page view.
+      }
+      sync();
+    });
+  }
+
+  setupThemeToggle();
+</script>

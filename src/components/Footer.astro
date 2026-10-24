@@ -1,19 +1,26 @@
 ---
 import { site } from '@data/site';
 
+const { heading, email, linkedin } = site.contact;
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-auto bg-background">
-  <p class="text-sm text-footer-muted">
-    © {year} {site.hero.name} · Built with{' '}
-    <a
-      href="https://astro.build"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-slate-light transition hover:text-slate-lightest"
-    >
-      Astro
-    </a>
-  </p>
+<footer id="contact" class="mt-20 scroll-mt-8 border-t-4 border-brand-light bg-bg-grey">
+  <div class="container-page flex flex-col gap-20 pt-20 pb-6 sm:gap-40 sm:pt-40 sm:pb-10">
+    <div>
+      <h2 class="headline max-w-3xl">{heading}</h2>
+      <ul class="mt-8 flex flex-wrap gap-x-10 gap-y-3">
+        {email && <li><a href={`mailto:${email}`} class="link-large">{email}</a></li>}
+        {linkedin && (
+          <li>
+            <a href={linkedin} class="link-large" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+          </li>
+        )}
+      </ul>
+    </div>
+    <div class="caption-regular flex flex-wrap justify-between gap-4 text-low">
+      <p>©{year} {site.hero.name}</p>
+      <a href="#top" class="text-low transition-colors hover:text-high">Back to top ↑</a>
+    </div>
+  </div>
 </footer>

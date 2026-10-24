@@ -9,7 +9,8 @@ Live (for now): https://ummmthomas.github.io/tommoore/
 - **Home page, archive and contact links:** `data/site.ts`
 - **Case studies:** one Markdown file per project in `src/content/work/`. The file name becomes the URL (`/work/<file-name>`), and the matching `slug` in `data/site.ts` links the home page card to it.
 - **Images:** put them in `public/` and reference them without a leading slash, e.g. `images/rapid/hero.png`.
-- **Colours:** the `ink` theme in `src/styles/global.css`.
+- **Colours and type:** design tokens (light and dark) in `src/styles/tokens.css`; the type scale (`.title`, `.headline`, `.subhead`, `.eyebrow`, `.body`, links and captions) is in `src/styles/global.css`.
+- **Images:** none yet. Add them per project via `image` in `data/site.ts`; until then each project shows a tinted placeholder.
 
 ## Running locally
 

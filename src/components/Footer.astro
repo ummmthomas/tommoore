@@ -1,0 +1,19 @@
+---
+import { site } from '@data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto bg-background">
+  <p class="text-sm text-footer-muted">
+    © {year} {site.hero.name} · Built with{' '}
+    <a
+      href="https://astro.build"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-slate-light transition hover:text-slate-lightest"
+    >
+      Astro
+    </a>
+  </p>
+</footer>

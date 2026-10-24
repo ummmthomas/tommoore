@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import About from '../components/About.astro';
+import Footer from '../components/Footer.astro';
+import FeaturedProjects from '../components/FeaturedProjects.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { site } from '../../data/site';
+
+const projects = site.featuredProjects;
+---
+
+<Layout title={site.meta.title} description={site.meta.description}>
+  <About />
+  <FeaturedProjects projects={projects} />
+  <Testimonials />
+  <Footer />
+</Layout>

@@ -1,0 +1,30 @@
+---
+import { site } from '@data/site';
+
+const testimonials = site.testimonials;
+---
+
+{testimonials.length > 0 && (
+  <section
+    id="testimonials"
+    class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8"
+    aria-labelledby="testimonials-heading"
+  >
+    <h2 id="testimonials-heading" class="section-heading">Kind words</h2>
+    <div class="space-y-4">
+      {testimonials.map((item) => (
+        <figure class="panel-card space-y-4">
+          <blockquote class="body-copy text-lg">“{item.quote}”</blockquote>
+          <figcaption class="text-sm text-slate-light">
+            {item.href ? (
+              <a href={item.href} class="subtle-link" target="_blank" rel="noreferrer">{item.name}</a>
+            ) : (
+              item.name
+            )}
+            <span class="text-slate-lightest"> · {item.title}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}

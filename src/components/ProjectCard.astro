@@ -1,0 +1,122 @@
+---
+import type { FeaturedProject } from '../../data/site';
+import { Icon } from 'astro-icon/components';
+import { withBase } from '../utils/withBase';
+
+interface Props {
+  project: FeaturedProject;
+}
+
+const { project } = Astro.props;
+
+const href = project.slug ? withBase(`work/${project.slug}`) : undefined;
+const imageSrc = project.image ? withBase(project.image) : undefined;
+---
+
+<article class="scroll-stat panel-card group space-y-6">
+  <header>
+    <h3 class="text-2xl font-semibold text-slate">
+      {href ? (
+        <a href={href} class="transition-colors hover:text-accent" data-astro-prefetch>
+          {project.title}
+        </a>
+      ) : (
+        project.title
+      )}
+    </h3>
+    <p class="mt-1 font-mono text-sm text-accent">
+      {project.period}
+      {project.readTime && <span class="text-slate-lightest"> · {project.readTime}</span>}
+    </p>
+  </header>
+
+  {imageSrc && (
+    <div class="w-full max-w-3xl overflow-hidden rounded-xl">
+      <img
+        src={imageSrc}
+        alt={project.imageAlt}
+        class="w-full h-56 object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  )}
+
+  <dl class="space-y-4">
+    <p class="body-copy text-lg">{project.summary}</p>
+
+    {project.solution && (
+      <div>
+        <dt class="text-xs uppercase tracking-wider text-accent">Solution</dt>
+        <dd class="mt-1.5 text-slate">{project.solution}</dd>
+      </div>
+    )}
+    {project.impact && (
+      <div>
+        <dt class="text-xs uppercase tracking-wider text-accent">Impact</dt>
+        <dd class="mt-1.5 text-slate">{project.impact}</dd>
+      </div>
+    )}
+  </dl>
+
+  <ul class="flex flex-wrap gap-2">
+    {project.tags.map((tag) => (
+      <li class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-accent">
+        {tag}
+      </li>
+    ))}
+  </ul>
+
+  {href && (
+    <a
+      href={href}
+      class="inline-flex items-center gap-2 text-sm text-accent transition hover:text-slate-light"
+      data-astro-prefetch
+    >
+      Read the case study
+      <span class="sr-only">: {project.title}</span>
+      <Icon name="ph:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </a>
+  )}
+</article>
+
+<style>
+  .scroll-stat {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scroll-stat.reveal {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+</style>
+
+<script>
+  function revealCards() {
+    const cards = document.querySelectorAll('.scroll-stat');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = Array.from(cards).indexOf(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('reveal');
+          }, (index % 3) * 150); 
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -10px 0px'
+    });
+
+    cards.forEach(card => observer.observe(card));
+  }
+
+  revealCards();
+  
+  document.addEventListener('astro:after-swap', revealCards);
+</script>

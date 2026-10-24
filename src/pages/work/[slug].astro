@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import { site } from '@data/site';
+import { Icon } from 'astro-icon/components';
+import { withBase } from '../../utils/withBase';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  return work.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { data } = entry;
+---
+
+<ArchiveLayout title={`${data.title} | ${site.hero.name}`} description={data.description}>
+  <p class="mb-8">
+    <a
+      href={withBase()}
+      class="group flex items-center gap-2 text-sm text-accent transition hover:text-slate-light"
+      data-astro-prefetch
+    >
+      <Icon name="ph:arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+      {site.hero.name}
+    </a>
+  </p>
+
+  <article class="max-w-3xl">
+    <header class="mb-12 space-y-4">
+      <p class="font-mono text-sm text-accent">
+        {data.period}
+        {data.readTime && <span class="text-slate-lightest"> · {data.readTime}</span>}
+      </p>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">{data.title}</h1>
+      <p class="text-xl leading-relaxed text-slate-light">{data.headline}</p>
+    </header>
+
+    <dl class="mb-14 grid gap-8 border-y border-slate-lightest/30 py-8 sm:grid-cols-2">
+      <div>
+        <dt class="mb-3 text-xs uppercase tracking-wider text-accent">My contribution</dt>
+        <dd>
+          <ul class="space-y-1 text-slate">
+            {data.contribution.map((item) => <li>{item}</li>)}
+          </ul>
+        </dd>
+      </div>
+      <div>
+        <dt class="mb-3 text-xs uppercase tracking-wider text-accent">Outcomes</dt>
+        <dd>
+          <ul class="space-y-1 text-slate">
+            {data.outcomes.map((item) => <li>{item}</li>)}
+          </ul>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="case-study body-copy">
+      <Content />
+    </div>
+  </article>
+</ArchiveLayout>
+
